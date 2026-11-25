@@ -16,8 +16,8 @@ window.EQUITYOFFER_CONFIG = {
     propYieldUrl: "https://dinhduy2702.github.io/us-propyield-analyzer/",
     retireSmartUrl: "https://dinhduy2702.github.io/us-retiresmart-planner/",
     gumroadWealthOs: {
-      label: "US Personal Finance & Wealth OS (2026 Sheets)",
-      url: "" // AGY 5 dien link Gumroad SP #2 khi xong
+      label: "Get Wealth OS ($0 Lite / $19 Full)",
+      url: "https://897833387907.gumroad.com/l/us-personal-finance-wealth-os-2026"
     }
   },
   affiliates: [
