@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EquityOffer US: 2026 Job Offer Comparison, RSU Tax &amp; Salary Negotiation Calculator</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%230F766E'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-family='Georgia,serif' font-weight='700' font-size='34' fill='%23FFFFFF'%3EE%3C/text%3E%3C/svg%3E">
+  <meta name="description" content="Free 2026 US job offer &amp; tech compensation calculator: compare 2 job offers after 50-state taxes (Base + Bonus + 4-Year RSU Vesting + 401k Match), calculate RSU 22% tax underwithholding, and reverse-calculate relocation salary negotiation.">
+  <meta property="og:title" content="EquityOffer US — 2026 Job Offer, RSU Tax &amp; Negotiation Calculator">
+  <meta property="og:description" content="Compare 2 US job offers after 50-state taxes, model 4-year RSU vesting &amp; 22% withholding gaps, and reverse-calculate relocation salary targets.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,600;6..72,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand-link" href="#compare">
+        <span class="brand-badge" aria-hidden="true">E</span>
+        <span style="min-width:0;">
+          <span class="brand-title" id="brandNameText">EquityOffer US</span>
+          <span class="brand-sub" id="brandSubText">2026 Job Offer, RSU Tax &amp; Negotiation Planner</span>
+        </span>
+      </a>
+
+      <div class="header-meta">
+        <a class="btn btn-sm hide-xs" href="https://dinhduy2702.github.io/us-finance-toolkit-hub/" target="_blank" rel="noopener noreferrer">All Tools Hub</a>
+        <a class="btn btn-sm hide-xs" href="https://dinhduy2702.github.io/us-smart-money-calculators/" target="_blank" rel="noopener noreferrer">SmartMoney</a>
+        <a class="btn btn-sm hide-xs" href="https://dinhduy2702.github.io/us-retiresmart-planner/" target="_blank" rel="noopener noreferrer">RetireSmart</a>
+        <button type="button" class="btn btn-sm" id="themeToggleBtn" aria-label="Switch color theme">Dark Mode</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="tool-nav-wrap">
+    <div class="container">
+      <nav class="tool-nav" role="tablist" aria-label="Equity and offer calculators">
+        <button type="button" class="tool-tab" role="tab" id="tab-compare" aria-controls="panel-compare" aria-selected="true" data-tool="compare">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="18" rx="1"/><rect x="14" y="3" width="7" height="18" rx="1"/></svg>
+          2-Offer Comparison
+        </button>
+        <button type="button" class="tool-tab" role="tab" id="tab-rsu" aria-controls="panel-rsu" aria-selected="false" data-tool="rsu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+          RSU Tax &amp; Vesting
+        </button>
+        <button type="button" class="tool-tab" role="tab" id="tab-negotiate" aria-controls="panel-negotiate" aria-selected="false" data-tool="negotiate">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          Relocation &amp; Negotiation
+        </button>
+      </nav>
+    </div>
+  </div>
+
+  <main class="container">
+    <section class="page-intro">
+      <div>
+        <h1 class="page-title" id="activeToolHeading">2026 US Job Offer &amp; Total Comp Comparator (After 50-State Taxes)</h1>
+        <p class="page-desc" id="activeToolDesc">
+          Compare two US job offers side by side — including Base, Annual Bonus, 4-Year RSU Vesting schedules, Sign-On Bonus, 401(k) Match, and true 2026 Federal + 50-State take-home pay.
+        </p>
+      </div>
+      <div class="intro-actions">
+        <button type="button" class="btn btn-primary btn-sm" id="shareLinkBtn">Share<span class="hide-xs"> Link</span></button>
+        <button type="button" class="btn btn-sm" id="copyScenarioBtn">Copy<span class="hide-xs"> Summary</span></button>
+        <button type="button" class="btn btn-sm" id="printReportBtn">Print<span class="hide-xs"> / PDF</span></button>
+        <button type="button" class="btn btn-sm" id="resetDefaultsBtn">Reset</button>
+      </div>
+    </section>
+
+    <section class="presets-bar" aria-label="Quick example scenarios">
+      <span class="presets-label">Try a scenario:</span>
+      <div class="presets-chips" id="quickPresetsRow"></div>
+    </section>
+
+    <!-- TAB 1: 2-OFFER SIDE-BY-SIDE COMPARISON -->
+    <section class="calc-panel" id="panel-compare" role="tabpanel" aria-labelledby="tab-compare">
+      <div class="calc-grid">
+        <div class="card">
+          <h2 class="card-heading">Offer A vs. Offer B Package Inputs</h2>
+          <p class="card-sub">Adjust Base, Bonus, 4-Year RSU Grant, Vesting Schedule, and US State for each offer.</p>
+
+          <div class="form-stack">
+            <div class="field">
+              <label for="cmpFiling">Tax Filing Status (Applies to Both Offers)</label>
+              <select class="select-box" id="cmpFiling">
+                <option value="single" selected>Single</option>
+                <option value="married">Married Filing Jointly</option>
+                <option value="hoh">Head of Household</option>
+              </select>
+            </div>
+
+            <details class="advanced-details" open>
+              <summary>Offer A (Current / Baseline Offer)</summary>
+              <div class="advanced-inner">
+                <div class="field-row-2">
+                  <div class="field">
+                    <label for="oaBase">Base Salary ($)</label>
+                    <input class="input-box tabular" type="number" id="oaBase" min="30000" max="1500000" step="2500" value="165000">
+                  </div>
+                  <div class="field">
+                    <label for="oaState">US State / DC</label>
+                    <select class="select-box" id="oaState"></select>
+                  </div>
+                </div>
+                <div class="field-row-3">
+                  <div class="field">
+                    <label for="oaBonusPct">Bonus (%)</label>
+                    <input class="input-box tabular" type="number" id="oaBonusPct" min="0" max="100" step="1" value="15">
+                  </div>
+                  <div class="field">
+                    <label for="oaRsu">4-Yr RSU ($)</label>
+                    <input class="input-box tabular" type="number" id="oaRsu" min="0" max="5000000" step="5000" value="180000">
+                  </div>
+                  <div class="field">
+                    <label for="oaSignOn">Yr-1 Sign-On ($)</label>
+                    <input class="input-box tabular" type="number" id="oaSignOn" min="0" max="500000" step="2500" value="15000">
+                  </div>
+                </div>
+                <div class="field-row-2">
+                  <div class="field">
+                    <label for="oaVest">RSU Vesting Schedule</label>
+                    <select class="select-box" id="oaVest">
+                      <option value="standard" selected>25% / 25% / 25% / 25% (Standard)</option>
+                      <option value="amazon">5% / 15% / 40% / 40% (Back-Loaded)</option>
+                      <option value="front">40% / 30% / 20% / 10% (Front-Loaded)</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="oaMatchPct">401(k) Match (% of Base)</label>
+                    <input class="input-box tabular" type="number" id="oaMatchPct" min="0" max="15" step="0.5" value="4">
+                  </div>
+                </div>
+              </div>
+            </details>
+
+            <details class="advanced-details" open>
+              <summary>Offer B (Competing / New Offer)</summary>
+              <div class="advanced-inner">
+                <div class="field-row-2">
+                  <div class="field">
+                    <label for="obBase">Base Salary ($)</label>
+                    <input class="input-box tabular" type="number" id="obBase" min="30000" max="1500000" step="2500" value="170000">
+                  </div>
+                  <div class="field">
+                    <label for="obState">US State / DC</label>
+                    <select class="select-box" id="obState"></select>
+                  </div>
+                </div>
+                <div class="field-row-3">
+                  <div class="field">
+                    <label for="obBonusPct">Bonus (%)</label>
+                    <input class="input-box tabular" type="number" id="obBonusPct" min="0" max="100" step="1" value="15">
+                  </div>
+                  <div class="field">
+                    <label for="obRsu">4-Yr RSU ($)</label>
+                    <input class="input-box tabular" type="number" id="obRsu" min="0" max="5000000" step="5000" value="220000">
+                  </div>
+                  <div class="field">
+                    <label for="obSignOn">Yr-1 Sign-On ($)</label>
+                    <input class="input-box tabular" type="number" id="obSignOn" min="0" max="500000" step="2500" value="25000">
+                  </div>
+                </div>
+                <div class="field-row-2">
+                  <div class="field">
+                    <label for="obVest">RSU Vesting Schedule</label>
+                    <select class="select-box" id="obVest">
+                      <option value="standard" selected>25% / 25% / 25% / 25% (Standard)</option>
+                      <option value="amazon">5% / 15% / 40% / 40% (Back-Loaded)</option>
+                      <option value="front">40% / 30% / 20% / 10% (Front-Loaded)</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="obMatchPct">401(k) Match (% of Base)</label>
+                    <input class="input-box tabular" type="number" id="obMatchPct" min="0" max="15" step="0.5" value="5">
+                  </div>
+                </div>
+              </div>
+            </details>
+          </div>
+        </div>
+
+        <div class="card result-sticky" aria-live="polite">
+          <div class="hero-result-top">
+            <div>
+              <span class="result-label">4-Year After-Tax Net Winner (incl. 401k Match)</span>
+              <span class="result-big tabular" id="cmpWinnerTitle">Offer B Wins</span>
+              <div class="result-subline tabular" id="cmpWinnerSub">...</div>
+            </div>
+            <span class="status-pill pass tabular" id="cmpDeltaBadge">+$0 / 4 yrs</span>
+          </div>
+
+          <div class="kpi-strip-4">
+            <div class="kpi-mini">
+              <span>Offer A Avg Gross</span>
+              <strong class="tabular" id="oaAvgGross">$0/yr</strong>
+            </div>
+            <div class="kpi-mini">
+              <span>Offer A Avg Net</span>
+              <strong class="tabular" id="oaAvgNet">$0/yr</strong>
+            </div>
+            <div class="kpi-mini">
+              <span>Offer B Avg Gross</span>
+              <strong class="tabular" id="obAvgGross">$0/yr</strong>
+            </div>
+            <div class="kpi-mini">
+              <span>Offer B Avg Net</span>
+              <strong class="tabular" id="obAvgNet">$0/yr</strong>
+            </div>
+          </div>
+
+          <div class="chart-wrap">
+            <div class="compare-bars" id="cmpOfferBars"></div>
+          </div>
+
+          <div class="insight-box" id="cmpInsightBox"></div>
+          <div class="bridge-box" id="cmpBridgeBox"></div>
+          <div class="result-cta-card" data-result-cta="compare"></div>
+        </div>
+      </div>
+
+      <div class="card deep-section">
+        <div class="deep-head">
+          <div>
+            <h2 class="card-heading">4-Year After-Tax Cash Flow Breakdown (Year 1 to Year 4)</h2>
+            <p class="card-sub" style="margin-bottom:0;">Includes Base, Target Bonus, Vested RSUs, Sign-On Bonus, and 401(k) Match after 2026 Federal, FICA &amp; State taxes.</p>
+          </div>
+          <button type="button" class="btn btn-sm" id="cmpExportCsvBtn">Export CSV</button>
+        </div>
+        <div class="table-scroll">
+          <table class="schedule-table" aria-label="4-year offer comparison table">
+            <thead>
+              <tr>
+                <th>Year</th>
+                <th>Offer A Gross</th>
+                <th>Offer A Net Take-Home</th>
+                <th>Offer B Gross</th>
+                <th>Offer B Net Take-Home</th>
+                <th>Annual Net Edge</th>
+              </tr>
+            </thead>
+            <tbody id="cmpTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: RSU TAX & 22% SUPPLEMENTAL WITHHOLDING GAP -->
+    <section class="calc-panel" id="panel-rsu" role="tabpanel" aria-labelledby="tab-rsu" hidden>
+      <div class="calc-grid">
+        <div class="card">
+          <h2 class="card-heading">RSU Grant &amp; Tax Withholding Inputs</h2>
+          <p class="card-sub">Uncover how much extra cash you must set aside because employers default to 22% federal withholding on RSU vests.</p>
+
+          <div class="form-stack">
+            <div class="field">
+              <div class="field-head">
+                <label for="rsuGrant">Total 4-Year RSU Grant ($)</label>
+                <span class="field-hint tabular" id="rsuGrantHint">$240,000</span>
+              </div>
+              <input class="input-box tabular" type="number" id="rsuGrant" min="10000" max="5000000" step="10000" value="240000">
+              <input class="range-slider" type="range" id="rsuGrantSlider" min="40000" max="800000" step="10000" value="240000" aria-label="4-year RSU grant slider">
+            </div>
+
+            <div class="field-row-2">
+              <div class="field">
+                <label for="rsuVest">Vesting Schedule</label>
+                <select class="select-box" id="rsuVest">
+                  <option value="standard" selected>25% / 25% / 25% / 25% (Standard)</option>
+                  <option value="amazon">5% / 15% / 40% / 40% (Back-Loaded)</option>
+                  <option value="front">40% / 30% / 20% / 10% (Front-Loaded)</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="rsuStockMove">Stock Price Scenario (%)</label>
+                <select class="select-box" id="rsuStockMove">
+                  <option value="-25">Bear Case (-25%)</option>
+                  <option value="0" selected>Flat / Grant Price (0%)</option>
+                  <option value="20">Bull Case (+20%)</option>
+                  <option value="50">Breakout (+50%)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field-row-3">
+              <div class="field">
+                <label for="rsuFedBracket">Your Fed Bracket (%)</label>
+                <input class="input-box tabular" type="number" id="rsuFedBracket" min="12" max="37" step="1" value="32">
+              </div>
+              <div class="field">
+                <label for="rsuStateRate">State Tax Rate (%)</label>
+                <input class="input-box tabular" type="number" id="rsuStateRate" min="0" max="14" step="0.5" value="9.3">
+              </div>
+              <div class="field">
+                <label for="rsuWithheld">Employer Withheld (%)</label>
+                <input class="input-box tabular" type="number" id="rsuWithheld" min="15" max="37" step="1" value="22">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card result-sticky" aria-live="polite">
+          <div class="hero-result-top">
+            <div>
+              <span class="result-label">4-Year RSU After-Tax Cash Value</span>
+              <span class="result-big tabular" id="rsuNetTotal">$0</span>
+              <div class="result-subline tabular" id="rsuGrossSub">Adjusted 4-Year Gross Value: $0</div>
+            </div>
+            <span class="status-pill warn tabular" id="rsuGapBadge">Tax Gap: $0/yr</span>
+          </div>
+
+          <div class="kpi-strip-3">
+            <div class="kpi-mini">
+              <span>Total Tax Owed (4 Yr)</span>
+              <strong class="tabular" id="rsuTotalTax">$0</strong>
+            </div>
+            <div class="kpi-mini">
+              <span>Underwithholding Gap</span>
+              <strong class="tabular" id="rsuGap4Yr">$0</strong>
+            </div>
+            <div class="kpi-mini">
+              <span>Avg Annual Net RSU</span>
+              <strong class="tabular" id="rsuAvgNet">$0/yr</strong>
+            </div>
+          </div>
+
+          <div class="insight-box" id="rsuInsightBox"></div>
+          <div class="result-cta-card" data-result-cta="rsu"></div>
+        </div>
+      </div>
+
+      <div class="card deep-section">
+        <div class="deep-head">
+          <div>
+            <h2 class="card-heading">Annual RSU Vesting &amp; Tax Reserve Schedule</h2>
+            <p class="card-sub" style="margin-bottom:0;">Exact shares value vesting each year, IRS 22% withheld, and extra cash to park in HYSA before April 15.</p>
+          </div>
+        </div>
+        <div class="table-scroll">
+          <table class="schedule-table" aria-label="RSU vesting schedule">
+            <thead>
+              <tr>
+                <th>Year</th>
+                <th>Vest %</th>
+                <th>Gross Vest Value</th>
+                <th>True Tax Owed</th>
+                <th>Extra Tax to Set Aside</th>
+                <th>Net Keepable Cash</th>
+              </tr>
+            </thead>
+            <tbody id="rsuTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: RELOCATION & SALARY NEGOTIATION REVERSE -->
+    <section class="calc-panel" id="panel-negotiate" role="tabpanel" aria-labelledby="tab-negotiate" hidden>
+      <div class="calc-grid">
+        <div class="card">
+          <h2 class="card-heading">Relocation &amp; Counter-Offer Reverse Inputs</h2>
+          <p class="card-sub">Moving from a 0%-tax state (TX/WA/FL) to CA/NY, or countering a job offer? Calculate the exact gross salary needed to stay ahead.</p>
+
+          <div class="form-stack">
+            <div class="field-row-2">
+              <div class="field">
+                <label for="ngCurComp">Current Gross Annual Comp ($)</label>
+                <input class="input-box tabular" type="number" id="ngCurComp" min="30000" max="1500000" step="2500" value="150000">
+              </div>
+              <div class="field">
+                <label for="ngFiling">Filing Status</label>
+                <select class="select-box" id="ngFiling">
+                  <option value="single" selected>Single</option>
+                  <option value="married">Married Filing Jointly</option>
+                  <option value="hoh">Head of Household</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field-row-2">
+              <div class="field">
+                <label for="ngFromState">Current State</label>
+                <select class="select-box" id="ngFromState"></select>
+              </div>
+              <div class="field">
+                <label for="ngToState">Target / New State</label>
+                <select class="select-box" id="ngToState"></select>
+              </div>
+            </div>
+
+            <div class="field-row-2">
+              <div class="field">
+                <label for="ngColDiff">Cost of Living Increase (%)</label>
+                <input class="input-box tabular" type="number" id="ngColDiff" min="-40" max="80" step="2" value="18">
+              </div>
+              <div class="field">
+                <label for="ngTargetRaise">Desired Real Net Raise (%)</label>
+                <input class="input-box tabular" type="number" id="ngTargetRaise" min="0" max="50" step="2" value="10">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card result-sticky" aria-live="polite">
+          <div class="hero-result-top">
+            <div>
+              <span class="result-label">Target Negotiation Offer (Incl. Real Raise)</span>
+              <span class="result-big tabular" id="ngTargetOffer">$0</span>
+              <div class="result-subline tabular" id="ngBreakEvenSub">Minimum Break-Even Offer: $0 (+0% gross)</div>
+            </div>
+            <span class="status-pill pass tabular" id="ngStateDiffBadge">State Tax Impact</span>
+          </div>
+
+          <div class="kpi-strip-3">
+            <div class="kpi-mini">
+              <span>Current Net Pay</span>
+              <strong class="tabular" id="ngCurNet">$0/yr</strong>
+            </div>
+            <div class="kpi-mini">
+              <span>Required New Net</span>
+              <strong class="tabular" id="ngNeedNet">$0/yr</strong>
+            </div>
+            <div class="kpi-mini">
+              <span>Gross Jump Needed</span>
+              <strong class="tabular" id="ngGrossJump">+0%</strong>
+            </div>
+          </div>
+
+          <div class="insight-box" id="ngInsightBox"></div>
+          <div class="result-cta-card" data-result-cta="negotiate"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTEXTUAL NEXT STEPS (ACTIONABLE CHECKLISTS - ZERO COMING SOON) -->
+    <section class="offers-section" aria-label="Tech compensation playbooks">
+      <div class="offers-head">
+        <h2>Smart Next Steps for High-Earner Equity &amp; Taxes</h2>
+        <span style="font-size:0.8rem; color:var(--text-muted);">2026 US Tech Comp &amp; RSU Playbooks</span>
+      </div>
+      <div class="offers-grid" id="offersGrid"></div>
+
+      <div class="ecosystem-bar">
+        <div>
+          <strong>Explore All 6 Free US Finance &amp; Wealth Tools</strong>
+          <div style="font-size:0.84rem; color:var(--text-secondary); margin-top:0.2rem;">
+            Jump to the US SmartMoney Hub, 50-state paycheck, debt payoff, S-Corp, real estate, or FIRE planners.
+          </div>
+        </div>
+        <div class="eco-links" id="ecoLinksContainer"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <strong>Educational Disclaimer:</strong> EquityOffer US provides mathematical compensation and tax estimates using 2026 federal tax brackets, FICA caps, and 50-state tax models for informational and negotiation preparation only. Actual RSU withholding, AMT on ISOs, local city taxes, and vesting acceleration terms depend on your employer's equity plan and CPA advice.
+    </div>
+  </footer>
+
+  <dialog class="wealth-modal" id="wealthOsModal" aria-labelledby="wealthOsModalTitle">
+    <div class="wealth-modal-head">
+      <div>
+        <span class="offer-badge">2026 Google Sheets System</span>
+        <h2 id="wealthOsModalTitle">US Personal Finance &amp; Wealth OS (Free Lite Preview)</h2>
+      </div>
+      <button type="button" class="btn btn-sm" id="closeModalBtn" aria-label="Close preview">Close</button>
+    </div>
+    <p class="wealth-modal-desc">
+      Built to pair with EquityOffer US &amp; SmartMoney US — track quarterly RSU vests, extra tax reserves, 401(k) contributions, and total net worth inside one clean Google Sheet.
+    </p>
+    <ul class="wealth-modal-list">
+      <li><strong>RSU Vesting &amp; Tax Shortfall Tracker:</strong> Logs every vest date and auto-computes extra tax to hold beyond 22%.</li>
+      <li><strong>50/30/20 High-Earner Cash Flow:</strong> Prevents lifestyle creep when jumping to a higher Total Comp band.</li>
+      <li><strong>Net Worth &amp; FIRE Countdown:</strong> Tracks vested equity, 401(k), Roth IRA, and real estate in one dashboard.</li>
+      <li><strong>Zero Subscription Fees:</strong> Runs 100% inside your own Google Drive with complete privacy.</li>
+    </ul>
+    <div class="wealth-modal-actions">
+      <button type="button" class="btn btn-primary btn-sm" id="modalPrintBtn">Save Offer Comparison (PDF)</button>
+      <button type="button" class="btn btn-sm" id="modalCloseFooterBtn">Back to Calculator</button>
+    </div>
+  </dialog>
+
+  <div class="toast" id="toastBox" hidden role="status" aria-live="polite"></div>
+
+  <script src="config.js"></script>
+  <script src="tax_data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
