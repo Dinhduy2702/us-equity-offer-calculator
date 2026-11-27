@@ -115,7 +115,7 @@
   /* 2026 Federal + FICA + 50-State Net Pay Engine */
   function calcAnnualNet(grossWages, stateCode, filing) {
     const gross = Math.max(0, grossWages);
-    const stdDed = TAX.standardDeduction[filing] || 15000;
+    const stdDed = TAX.standardDeduction[filing] || 16100;
     const fedTaxable = Math.max(0, gross - stdDed);
     const brackets = TAX.federalBrackets[filing] || TAX.federalBrackets.single;
 
